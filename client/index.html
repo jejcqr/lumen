@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chatbot épreuves</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    #chats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    #chat-lumen,
+    #chat-dsin {
+      flex: 1 1 300px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 8px;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    #chat-lumen {
+      background: #050712;
+      color: #f5f5f5;
+    }
+
+    #chat-dsin {
+      background: #f5f7fb;
+      color: #111;
+      border: 1px solid #ccd;
+    }
+
+    .msg {
+      margin-bottom: 8px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+
+    .msg-lumen {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .msg-dsin {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <h1>Chatbot épreuves</h1>
+
+  <div id="boutons-epreuves">
+    <div class="epreuve" data-numero="1">
+      <button class="btn-start">Commencer épreuve 1</button>
+      <button class="btn-ok">OK épreuve 1</button>
+      <button class="btn-ko">KO épreuve 1</button>
+    </div>
+    <div class="epreuve" data-numero="2">
+      <button class="btn-start">Commencer épreuve 2</button>
+      <button class="btn-ok">OK épreuve 2</button>
+      <button class="btn-ko">KO épreuve 2</button>
+    </div>
+    <div class="epreuve" data-numero="3">
+      <button class="btn-start">Commencer épreuve 3</button>
+      <button class="btn-ok">OK épreuve 3</button>
+      <button class="btn-ko">KO épreuve 3</button>
+    </div>
+    <div class="epreuve" data-numero="4">
+      <button class="btn-start">Commencer épreuve 4</button>
+      <button class="btn-ok">OK épreuve 4</button>
+      <button class="btn-ko">KO épreuve 4</button>
+    </div>
+    <div class="epreuve" data-numero="5">
+      <button class="btn-start">Commencer épreuve 5</button>
+      <button class="btn-ok">OK épreuve 5</button>
+      <button class="btn-ko">KO épreuve 5</button>
+    </div>
+    <div class="epreuve" data-numero="6">
+      <button class="btn-start">Commencer épreuve 6</button>
+      <button class="btn-ok">OK épreuve 6</button>
+      <button class="btn-ko">KO épreuve 6</button>
+    </div>
+    <div class="epreuve" data-numero="7">
+      <button class="btn-start">Commencer épreuve 7</button>
+      <button class="btn-ok">OK épreuve 7</button>
+      <button class="btn-ko">KO épreuve 7</button>
+    </div>
+    <div class="epreuve" data-numero="8">
+      <button class="btn-start">Commencer épreuve 8</button>
+      <button class="btn-ok">OK épreuve 8</button>
+      <button class="btn-ko">KO épreuve 8</button>
+    </div>
+    <div class="epreuve" data-numero="9">
+      <button class="btn-start">Commencer épreuve 9</button>
+      <button class="btn-ok">OK épreuve 9</button>
+      <button class="btn-ko">KO épreuve 9</button>
+    </div>
+    <div class="epreuve" data-numero="10">
+      <button class="btn-start">Commencer épreuve 10</button>
+      <button class="btn-ok">OK épreuve 10</button>
+      <button class="btn-ko">KO épreuve 10</button>
+    </div>
+  </div>
+
+  <div id="chats">
+    <div id="chat-lumen">
+      <h2>Chat L.U.M.E.N.</h2>
+      <div id="messages-lumen"></div>
+    </div>
+
+    <div id="chat-dsin">
+      <h2>Messages DSIN</h2>
+      <div id="messages-dsin"></div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
