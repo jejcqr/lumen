@@ -2,10 +2,11 @@
 - Node.js installé (avec npm)
 
 ## Étapes à suivre :
-cd server
+1. cd server
 
-1. npm install
-2. Créer un fichier .env avec : 
+2. npm install
+
+3. Créer un fichier .env avec : 
 
 
 PORT=3000
@@ -13,6 +14,6 @@ PORT=3000
 GROK_API_KEY=la clé Grok
 
 
-cd client
+4. cd client
 
-3. ouvrir index.html
+5. ouvrir index.html
