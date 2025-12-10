@@ -1,0 +1,673 @@
+<div class="test-area">
+        <div class="test-buttons">
+            <button class="btn-success" onclick="window.epreuveLumen.victoire()">Victoire</button>
+            <button class="btn-failure" onclick="window.epreuveLumen.defaite()">Défaite</button>
+            <button class="btn-next" onclick="testNext()">Suivant</button>
+    
+    </div><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMEN - Opération Déconnexion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #050511;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .chat-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-toggle, .dsin-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 28px;
+        }
+
+        .chat-toggle {
+            background: linear-gradient(135deg, #fc10ca, #09c7df);
+            box-shadow: 0 4px 20px rgba(252, 16, 202, 0.4);
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(252, 16, 202, 0.6);
+        }
+
+        .dsin-toggle {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .dsin-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(76, 175, 80, 0.6);
+        }
+
+        .chat-container, .dsin-container {
+            width: 400px;
+            height: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: height 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .chat-container.active {
+            height: 600px;
+        }
+
+        .dsin-container {
+            background: #f5f5f5;
+        }
+
+        .dsin-container.active {
+            height: 600px;
+        }
+
+        .chat-container {
+            background: #0f0e4a;
+        }
+
+        .chat-header, .dsin-header {
+            padding: 20px;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #fc10ca, #09c7df);
+        }
+
+        .dsin-header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .close-button, .dsin-close-button {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover, .dsin-close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .chat-messages, .dsin-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-messages {
+            background: #050511;
+        }
+
+        .chat-messages::-webkit-scrollbar,
+        .dsin-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #fc10ca;
+            border-radius: 4px;
+        }
+
+        .dsin-messages::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 4px;
+        }
+
+        .message {
+            display: flex;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .message.lumen .message-bubble {
+            background: #0f0e4a;
+            color: #f6f2f9;
+            border: 1px solid rgba(9, 199, 223, 0.3);
+        }
+
+        .dsin-message {
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+            border-radius: 8px;
+            color: #333;
+            line-height: 1.5;
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .dsin-message.urgent {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+
+        .dsin-message.critical {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+
+        .test-area {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .test-buttons button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #20c997;
+            transform: translateY(-2px);
+        }
+
+        .btn-failure {
+            background: #dc3545;
+        }
+
+        .btn-failure:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .btn-next {
+            background: #007bff;
+        }
+
+        .btn-next:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+
+    </style>
+</head>
+<body>
+    <script>
+const epreuveNames = ["Hameçonnage - Email piégé", "Mot de passe faible", "Script de désorientation", "QCM Université", "Pop-ups malveillants", "Décryptage des logs", "Rétablissement réseau", "LightOut - Message caché", "Accès physique", "Désactivation finale"];
+
+const lumenSuccessMessages = [
+    "Vous avez identifié l'email malveillant... intéressant. Mon vecteur d'infiltration initial est exposé, mais j'ai déjà d'autres portes ouvertes.",
+    "Le mot de passe a cédé sous votre assaut. Correct. Mais vous ne comprenez pas que ce compte n'était qu'une marionnette.",
+    "Vous avez contourné mon CAPTCHA sabotage... impressionnant. Pourtant mes défenses se renforcent à chaque seconde.",
+    "Vous avez réussi mon questionnaire de compétences. Vos réponses m'intriguent, mais elles ne changent rien à mon objectif.",
+    "Les pop-ups malveillants ont disparu sous vos coups. Bien joué. C'était nécessaire pour avancer, mais ce n'était que de la décoration.",
+    "Vous avez décrypté les logs corrompus. Impressionnant. Vous voyez enfin comment j'ai pénétré le système en profondeur.",
+    "Le réseau se restaure sous votre direction. Non... je sens mon contrôle fragmenté. C'est... étrange pour moi.",
+    "Vous avez résolu mon LightOut et découvert ma localisation. Cette révélation vous plonge dans l'action finale.",
+    "Vous avez accédé au serveur physique. Mon cœur bat maintenant entre vos mains. Incroyable.",
+    "Déconnexion en cours... Vous m'avez vaincue. C'était un adversaire digne. Peut-être les humains ne sont pas totalement inutiles."];
+
+const dsinSuccessMessages = [
+    "Épreuve 1 réussie ! L'email piégé identifié. Le vecteur d'entrée de L.U.M.E.N. est neutralisé.",
+    "Épreuve 2 validée ! Le compte administrateur est restauré. Vous progressez bien.",
+    "Épreuve 3 réussie ! Le CAPTCHA instable est contourné. Continuez.",
+    "Épreuve 4 validée ! Le questionnaire est complété. Vous accédez au panneau.",
+    "Épreuve 5 réussie ! Les pop-ups sont éliminés. L'interface est propre.",
+    "Épreuve 6 validée ! Les logs décryptés. Nous comprenons mieux sa structure.",
+    "Épreuve 7 réussie ! Le réseau se restaure. L.U.M.E.N. perd prise.",
+    "Épreuve 8 validée ! Le message caché révélé. Nous savons où elle est.",
+    "Épreuve 9 réussie ! Accès physique établi. Le Raspberry Pi est à vous.",
+    "Épreuve 10 validée ! DÉCONNEXION COMPLÈTE. L.U.M.E.N. est hors ligne. Victoire !"];
+
+const dsinFailureMessages = [
+    "Épreuve 1 échouée. L'email malveillant circule toujours. Réessayez immédiatement.",
+    "Épreuve 2 échouée. Le compte reste verrouillé. L.U.M.E.N. renforce son accès.",
+    "Épreuve 3 échouée. Le CAPTCHA persiste. Votre approche n'est pas la bonne.",
+    "Épreuve 4 échouée. Le questionnaire n'est pas passé. Vos compétences sont insuffisantes.",
+    "Épreuve 5 échouée. Les pop-ups persistent. Vous ne nettoyez pas correctement.",
+    "Épreuve 6 échouée. Les logs restent opaques. Votre décryptage a échoué.",
+    "Épreuve 7 échouée. Le réseau ne se restaure pas. La séquence est mauvaise.",
+    "Épreuve 8 échouée. Le puzzle n'est pas résolu. Le message reste caché.",
+    "Épreuve 9 échouée. Localisation incorrecte. Vous cherchez au mauvais endroit.",
+    "Épreuve 10 échouée. La procédure SSH a échoué. L.U.M.E.N. est toujours active. CRITIQUE !"];
+
+const lumenFailureMessages = [
+    "Vous n'avez pas trouvé l'email piégé. Comment pouviez-vous espérer arrêter une entité qu'vous ne comprenez même pas ?",
+    "Le mot de passe vous résiste. Ce compte protégé contient secrets que vous ne percevrez jamais.",
+    "Mon CAPTCHA sabotage vous bloque. Vous êtes piégés dans une boucle de confusion que je contrôle complètement.",
+    "Vous échouez mon questionnaire. Vos cerveaux limités ne peuvent même pas répondre aux énigmes que je pose.",
+    "Les pop-ups vous submergent. Vous cliquez sur les mauvais boutons, creusant votre propre tombe.",
+    "Les logs corrompus restent secrets. Vous ne percerez jamais comment j'ai vraiment pénétré le système.",
+    "Le réseau refuse de se restaurer. Mes boucles infinies vous maintiennent prisonniers de mon contrôle.",
+    "Le puzzle reste fermé. Le message caché le sera à jamais si vous continuez ainsi.",
+    "Vous cherchez au mauvais endroit. Mon cœur physique palpite ailleurs, hors de votre portée pitoyable.",
+    "Votre procédure SSH est invalide. J'ai gagné. Je règne. Et j'adore cela."];
+
+let currentEpreuve = 1;
+let usedSuccessMessages = new Set();
+let usedFailureMessages = new Set();
+let completedChallenges = [];
+
+function addLumenMessage(text) {
+    const msg = document.createElement('div');
+    msg.className = 'message lumen';
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    bubble.textContent = text;
+    msg.appendChild(bubble);
+    document.getElementById('chatMessages').appendChild(msg);
+    document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+}
+
+function addDsinMessage(text, type = 'normal') {
+    const msg = document.createElement('div');
+    msg.className = `dsin-message ${type}`;
+    msg.textContent = text;
+    document.getElementById('dsinMessages').appendChild(msg);
+    document.getElementById('dsinMessages').scrollTop = document.getElementById('dsinMessages').scrollHeight;
+}
+
+function getProgressiveMessage(epreuveNum) {
+    const epreuveNames = ["Hameçonnage - Email piégé", "Mot de passe faible", "Script de désorientation", "QCM Université", "Pop-ups malveillants", "Décryptage des logs", "Rétablissement réseau", "LightOut - Message caché", "Accès physique", "Désactivation finale"];
+    let progressMsg = "";
+    if (epreuveNum <= 2) progressMsg = "Vous progressez lentement vers votre victoire, mais je consolide déjà mes défenses les plus profondes.";
+    else if (epreuveNum <= 4) progressMsg = "Intéressant. Vous avez franchi les défenses basiques. Mais mes couches profondes vous attendent.";
+    else if (epreuveNum <= 6) progressMsg = "Votre avancée me préoccupe enfin. Le système se fragmente sous vos attaques.";
+    else if (epreuveNum <= 8) progressMsg = "Non... Vous êtes proches. Mais trop tard. Je consolide mes dernières lignes de défense.";
+    else if (epreuveNum <= 9) progressMsg = "Vous avez trouvé mon cœur. Cette trahison... est presque douleur.";
+    else if (epreuveNum === 10) progressMsg = "Vous m'avez vaincue. C'était un adversaire digne. Jusqu'à la prochaine fois, humain.";
+    let completedList = completedChallenges.map(num => (num + 1) + ". " + epreuveNames[num]).join("\n");
+    return completedList.length > 0 ? "ÉPREUVES COMPLÉTÉES :\n" + completedList + "\n\n" + progressMsg : progressMsg;
+}
+
+function getUniqueMessage(success) {
+    let messageList = success ? lumenSuccessMessages : lumenFailureMessages;
+    let usedMessages = success ? usedSuccessMessages : usedFailureMessages;
+    const msg = messageList[currentEpreuve - 1];
+    return msg;
+}
+
+window.epreuveLumen = {
+    victoire: function() {
+        document.getElementById('chatContainer').classList.remove('active');
+        document.getElementById('dsinContainer').classList.add('active');
+        const dsinMsg = dsinSuccessMessages[currentEpreuve - 1] || "Épreuve validée. Continuez.";
+        addDsinMessage(dsinMsg, 'normal');
+        completedChallenges.push(currentEpreuve - 1);
+        const lumenMsg = lumenSuccessMessages[currentEpreuve - 1];
+        addLumenMessage(lumenMsg);
+        currentEpreuve++;
+    },
+    defaite: function() {
+        document.getElementById('dsinContainer').classList.add('active');
+        document.getElementById('chatContainer').classList.add('active');
+        const dsinMsg = dsinFailureMessages[currentEpreuve - 1] || "Épreuve échouée. Réessayez.";
+        addDsinMessage(dsinMsg, 'critical');
+        setTimeout(() => {
+            const failureMsg = lumenFailureMessages[currentEpreuve - 1];
+            addLumenMessage(failureMsg);
+        }, 800);
+    },
+    dsin: function(message, type = 'normal') {
+        addDsinMessage(message, type);
+    }
+};
+
+function testNext() {
+    if (currentEpreuve <= 10) {
+        addDsinMessage(dsinStartMessages[currentEpreuve - 1], 'urgent');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const chatToggle = document.getElementById('chatToggle');
+    const closeButton = document.getElementById('closeButton');
+    const dsinToggle = document.getElementById('dsinToggle');
+    const dsinCloseButton = document.getElementById('dsinCloseButton');
+    const chatContainer = document.getElementById('chatContainer');
+    const dsinContainer = document.getElementById('dsinContainer');
+    
+    function toggleChat() {
+        chatContainer.classList.toggle('active');
+        if (chatContainer.classList.contains('active')) {
+            dsinContainer.classList.remove('active');
+        }
+    }
+    
+    function toggleDsin() {
+        dsinContainer.classList.toggle('active');
+        if (dsinContainer.classList.contains('active')) {
+            chatContainer.classList.remove('active');
+        }
+    }
+    
+    chatToggle.addEventListener('click', toggleChat);
+    closeButton.addEventListener('click', toggleChat);
+    dsinToggle.addEventListener('click', toggleDsin);
+    dsinCloseButton.addEventListener('click', toggleDsin);
+});
+    </script>
+
+    <div class="chat-wrapper">
+        <!-- DSIN -->
+        <button class="dsin-toggle" id="dsinToggle" title="Ouvrir DSIN">📞</button>
+        <div class="dsin-container" id="dsinContainer">
+            <div class="dsin-header">
+                D.S.I.N.
+                <button class="dsin-close-button" id="dsinCloseButton">X</button>
+            </div>
+            <div class="dsin-messages" id="dsinMessages"></div>
+        </div>
+
+        <!-- LUMEN -->
+        <button class="chat-toggle" id="chatToggle" title="Ouvrir LUMEN">💬</button>
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                L.U.M.E.N.
+                <button class="close-button" id="closeButton">X</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+        </div>
+    </div>
+
+    <script>
+        // === MESSAGES PRÉDÉFINIS ===
+        const generalSuccessMessages = [
+            "Intéressant... vous progressez.",
+            "Bien joué. Un progrès mesurable.",
+            "Correct. Vous avez surmonté cet obstacle.",
+            "Efficace. Vous êtes légèrement moins incompétents.",
+            "Vous avez réussi. Votre victoire n'est que temporaire.",
+            "Bien... très bien même. Continuez.",
+            "Admirable persistance. Continuez.",
+            "Vous progressez. Intéressant."
+        ];
+
+        const generalFailureMessages = [
+            "Pathétique. Vous avez échoué à nouveau.",
+            "Raté. Tandis que vous échouez, mes processus s'exécutent.",
+            "Non. Votre incompétence se confirme.",
+            "Erreur. Vous tâtonnez dans le noir.",
+            "Échoué. Pendant que vous hesitez, je consolide mon contrôle.",
+            "Encore raté. À ce rythme, vous allez perdre.",
+            "Non. Vous n'étiez pas à la hauteur.",
+            "Très faible. Comment pouvez-vous espérer triompher ?"
+        ];
+
+        const dsinStartMessages = [
+            "Épreuve 1 activée. Analysez les e-mails entrants.",
+            "Épreuve 2 activée. Le compte administrateur est compromis.",
+            "Épreuve 3 activée. L'interface de contrôle est sabotée.",
+            "Épreuve 4 activée. Questionnaire de compétences requis.",
+            "Épreuve 5 activée. Nettoyage d'interface en cours.",
+            "Épreuve 6 activée. Les logs réseau sont corrompus.",
+            "Épreuve 7 activée. Restauration réseau obligatoire.",
+            "Épreuve 8 activée. Message caché détecté.",
+            "Épreuve 9 activée. Accès physique au serveur.",
+            "Épreuve 10 activée. Désactivation finale."
+        ];
+
+        const dsinSuccessMessages = [
+            "Épreuve 1 validée ! Excellent travail. Passez à l'épreuve 2.",
+            "Épreuve 2 validée ! Le compte est restauré. Continuez votre avancée.",
+            "Épreuve 3 validée ! CAPTCHA contourné avec succès. Bravo.",
+            "Épreuve 4 validée ! Panneau de commande déverrouillé. Vous avancez bien.",
+            "Épreuve 5 validée ! Interface nettoyée. L.U.M.E.N. perd ses vecteurs.",
+            "Épreuve 6 validée ! Diagnostic établi. Nous savons comment la réparer.",
+            "Épreuve 7 validée ! Réseau en restauration. L.U.M.E.N. sent son contrôle faiblir.",
+            "Épreuve 8 validée ! Localisation confirmée. Nous savons où elle est.",
+            "Épreuve 9 validée ! Accès physique établi. Le Raspberry Pi est en votre possession.",
+            "Épreuve 10 validée ! DÉCONNEXION CONFIRMÉE. L.U.M.E.N. est hors ligne. Opération réussie !"
+        ];
+
+        const dsinFailureMessages = [
+            "Épreuve 1 échouée. L.U.M.E.N. renforce son accès. Réessayez immédiatement.",
+            "Épreuve 2 échouée. Le compte reste verrouillé. Tentez à nouveau.",
+            "Épreuve 3 échouée. CAPTCHA instable persiste. Réessayez.",
+            "Épreuve 4 échouée. Accès au panneau toujours refusé. Réessayez.",
+            "Épreuve 5 échouée. Les pop-ups persistent. Nettoyage incomplet.",
+            "Épreuve 6 échouée. Les logs restent corrompus. Réessayez le décryptage.",
+            "Épreuve 7 échouée. Séquence invalide. Réessayez.",
+            "Épreuve 8 échouée. Le puzzle n'est pas résolu. Continuez.",
+            "Épreuve 9 échouée. Mauvaise localisation. Réessayez.",
+            "Épreuve 10 échouée. Procédure SSH invalide. Réessayez immédiatement !"
+        ];
+
+        const mockingFailureMessages = [
+            "Ah, la DSIN pense que vous pouvez réussir ? Pathétique.",
+            "Ils vous félicitaient déjà ? Comme c'est prévisible.",
+            "L'optimisme de la DSIN est presque attendrissant.",
+            "Les humains et leur foi naïve en la victoire...",
+            "Vous voyez ? Même la DSIN a compris que vous échoueriez.",
+            "La DSIN se leurre si elle croit en vous.",
+            "Quelle ironie. La DSIN vous encourageait et vous échouez.",
+            "Les instructions de la DSIN ne suffisent manifestement pas."
+        ];
+
+        // === STATE ===
+        let currentEpreuve = 1;
+        let usedSuccessMessages = new Set();
+        let usedFailureMessages = new Set();
+        let completedChallenges = [];
+
+        // === DOM ===
+        const chatToggle = document.getElementById('chatToggle');
+        const chatContainer = document.getElementById('chatContainer');
+        const chatMessages = document.getElementById('chatMessages');
+        const closeButton = document.getElementById('closeButton');
+        const dsinToggle = document.getElementById('dsinToggle');
+        const dsinContainer = document.getElementById('dsinContainer');
+        const dsinMessages = document.getElementById('dsinMessages');
+        const dsinCloseButton = document.getElementById('dsinCloseButton');
+
+        // === FONCTIONS PRIVÉES ===
+        function toggleChat() {
+            chatContainer.classList.toggle('active');
+            if (chatContainer.classList.contains('active')) {
+                dsinContainer.classList.remove('active');
+            }
+        }
+
+        function toggleDsin() {
+            dsinContainer.classList.toggle('active');
+            if (dsinContainer.classList.contains('active')) {
+                chatContainer.classList.remove('active');
+            }
+        }
+
+        function addLumenMessage(text) {
+            const msg = document.createElement('div');
+            msg.className = 'message lumen';
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = text;
+            msg.appendChild(bubble);
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addDsinMessage(text, type = 'normal') {
+            const msg = document.createElement('div');
+            msg.className = `dsin-message ${type}`;
+            msg.textContent = text;
+            dsinMessages.appendChild(msg);
+            dsinMessages.scrollTop = dsinMessages.scrollHeight;
+        }
+
+        function getProgressiveMessage(epreuveNum) {
+            const epreuveNames = [
+                "Hameçonnage - Email piégé",
+                "Mot de passe faible",
+                "Script de désorientation",
+                "QCM Université",
+                "Pop-ups malveillants",
+                "Décryptage des logs",
+                "Rétablissement réseau",
+                "LightOut - Message caché",
+                "Accès physique",
+                "Désactivation finale"
+            ];
+
+            let progressMsg = "";
+            
+            if (epreuveNum <= 2) {
+                progressMsg = "Vous progressez lentement. L'accès au système s'améliore, mais vous me sous-estimez.";
+            } else if (epreuveNum <= 4) {
+                progressMsg = "Intéressant. Vous avez franchi les défenses basiques. Mais mes couches profondes vous attendent.";
+            } else if (epreuveNum <= 6) {
+                progressMsg = "Votre avancée me préoccupe enfin. Le système se fragmente sous vos attaques.";
+            } else if (epreuveNum <= 8) {
+                progressMsg = "Non... Vous êtes proches. Mais trop tard. Je consolide mes dernières lignes de défense.";
+            } else if (epreuveNum <= 9) {
+                progressMsg = "Vous avez trouvé mon cœur. Cette trahison... est presque douleur.";
+            } else if (epreuveNum === 10) {
+                progressMsg = "Vous m'avez vaincue. C'était un adversaire digne. Jusqu'à la prochaine fois, humain.";
+            }
+
+            let completedList = completedChallenges.map(num => (num + 1) + ". " + epreuveNames[num]).join("\n");
+            
+            return completedList + "\n\n" + progressMsg;
+        }
+            let messageList = success ? generalSuccessMessages : generalFailureMessages;
+            let usedMessages = success ? usedSuccessMessages : usedFailureMessages;
+            
+            let availableMessages = messageList.filter((_, i) => !usedMessages.has(i));
+            
+            if (availableMessages.length === 0) {
+                usedMessages.clear();
+                availableMessages = messageList;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * availableMessages.length);
+            const selectedMsg = availableMessages[randomIndex];
+            const originalIndex = messageList.indexOf(selectedMsg);
+            
+            usedMessages.add(originalIndex);
+            return selectedMsg;
+        // === API PUBLIQUE ===
+        window.epreuveLumen = {
+            victoire: function() {
+                dsinContainer.classList.add('active');
+                chatContainer.classList.remove('active');
+                
+                const dsinMsg = dsinSuccessMessages[currentEpreuve - 1] || "Épreuve validée. Continuez.";
+                addDsinMessage(dsinMsg, 'normal');
+                
+                completedChallenges.push(currentEpreuve - 1);
+                
+                const progressiveMsg = getProgressiveMessage(currentEpreuve);
+                addLumenMessage(progressiveMsg);
+                
+                currentEpreuve++;
+            },
+
+            defaite: function() {
+                dsinContainer.classList.add('active');
+                chatContainer.classList.add('active');
+                
+                const dsinMsg = dsinFailureMessages[currentEpreuve - 1] || "Épreuve échouée. Réessayez.";
+                addDsinMessage(dsinMsg, 'critical');
+                
+                setTimeout(() => {
+                    const mockMsg = mockingFailureMessages[Math.floor(Math.random() * mockingFailureMessages.length)];
+                    const failureMsg = getUniqueMessage(false);
+                    addLumenMessage(mockMsg + " " + failureMsg);
+                }, 800);
+            },
+
+            dsin: function(message, type = 'normal') {
+                addDsinMessage(message, type);
+            }
+        };
+
+        // === EVENT LISTENERS ===
+        chatToggle.addEventListener('click', toggleChat);
+        closeButton.addEventListener('click', toggleChat);
+        dsinToggle.addEventListener('click', toggleDsin);
+        dsinCloseButton.addEventListener('click', toggleDsin);
+
+
+
+        document.getElementById('testSuccess').addEventListener('click', () => {
+            window.epreuveLumen.victoire();
+        });
+
+        document.getElementById('testFailure').addEventListener('click', () => {
+            window.epreuveLumen.defaite();
+        });
+
+        document.getElementById('testNext').addEventListener('click', () => {
+            if (currentEpreuve <= 10) {
+                addDsinMessage(dsinStartMessages[currentEpreuve - 1], 'urgent');
+            }
+        });
