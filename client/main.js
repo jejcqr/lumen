@@ -1,7 +1,7 @@
 // main.js
 
-const API_URL = 'http://tristounet.fr:3000/api/chatbot';
-const DSIN_INTRO_URL = 'http://tristounet.fr:3000/api/dsin-intro';
+const API_URL = 'http://localhost:3000/api/chatbot';
+const DSIN_INTRO_URL = 'http://localhost:3000/api/dsin-intro';
 
 async function afficherIntroDsin(numeroEpreuve) {
   const dsinBox = document.getElementById('messages-dsin');
