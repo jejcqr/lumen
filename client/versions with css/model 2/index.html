@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chat IA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Boutons de test -->
+    <div class="test-buttons">
+        <button class="test-btn success" onclick="niv(1, true)">Épreuve 1 ✓</button>
+        <button class="test-btn error" onclick="niv(1, false)">Épreuve 1 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(2, true)">Épreuve 2 ✓</button>
+        <button class="test-btn error" onclick="niv(2, false)">Épreuve 2 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(3, true)">Épreuve 3 ✓</button>
+        <button class="test-btn error" onclick="niv(3, false)">Épreuve 3 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(4, true)">Épreuve 4 ✓</button>
+        <button class="test-btn error" onclick="niv(4, false)">Épreuve 4 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(5, true)">Épreuve 5 ✓</button>
+        <button class="test-btn error" onclick="niv(5, false)">Épreuve 5 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(6, true)">Épreuve 6 ✓</button>
+        <button class="test-btn error" onclick="niv(6, false)">Épreuve 6 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(7, true)">Épreuve 7 ✓</button>
+        <button class="test-btn error" onclick="niv(7, false)">Épreuve 7 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(8, true)">Épreuve 8 ✓</button>
+        <button class="test-btn error" onclick="niv(8, false)">Épreuve 8 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(9, true)">Épreuve 9 ✓</button>
+        <button class="test-btn error" onclick="niv(9, false)">Épreuve 9 ✗</button>
+        
+        <button class="test-btn success" onclick="niv(10, true)">Épreuve 10 ✓</button>
+        <button class="test-btn error" onclick="niv(10, false)">Épreuve 10 ✗</button>
+    </div>
+
+    <!-- Timer central -->
+    <div class="timer-overlay" id="timerOverlay">
+        <div class="timer-display" id="timerDisplay">30</div>
+    </div>
+
+    <!-- Chat toggle button -->
+    <div class="chat-toggle" id="chatToggle">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+        </svg>
+        <div class="notification-badge" id="notificationBadge">!</div>
+    </div>
+
+    <!-- Chat container -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-header-left">
+            </div>
+            <button class="close-button" id="closeButton">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message left">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
