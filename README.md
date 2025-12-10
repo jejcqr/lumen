@@ -1,3 +1,7 @@
+## Prérequis :
+- Node.js installé (avec npm)
+
+## Étapes à suivre :
 cd server
 
 1. npm install
@@ -5,6 +9,7 @@ cd server
 
 "
 PORT=3000
+
 GROK_API_KEY=la clé Grok
 "
 
