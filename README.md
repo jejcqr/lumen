@@ -13,7 +13,8 @@ PORT=3000
 
 GROK_API_KEY=la clé Grok
 
+4. npm run dev
 
-4. cd client
+5. cd client
 
-5. ouvrir index.html
+6. ouvrir index.html
