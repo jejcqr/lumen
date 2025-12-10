@@ -15,6 +15,8 @@ GROK_API_KEY=la clé Grok
 
 4. npm run dev
 
-5. cd client
+5. ouvrir un autre terminal
 
-6. ouvrir index.html
+6. cd client
+
+7. ouvrir index.html
