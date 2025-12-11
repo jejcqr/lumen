@@ -17,6 +17,6 @@ GROK_API_KEY=la clé Grok
 
 5. ouvrir un autre terminal
 
-6. cd client
+6. cd ../client
 
 7. ouvrir index.html
